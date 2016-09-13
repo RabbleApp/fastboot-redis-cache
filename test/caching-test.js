@@ -62,6 +62,30 @@ describe('caching tests', function() {
     });
   });
 
+  describe('redis options tests', function() {
+    it('accepts redis password', function() {
+      cache = new RedisCache({
+        host: "127.0.0.1",
+        port: "6379",
+        password: "some-password"
+      });
+      expect(cache.client.options.host).to.equal('127.0.0.1');
+      expect(cache.client.options.port).to.equal('6379');
+      expect(cache.client.options.password).to.equal('some-password');
+    });
+
+    it('uses redis url instead of host and port when url is provided', function() {
+      cache = new RedisCache({
+        host: "127.0.0.1",
+        port: "6379",
+        url: "redis://some-user:some-password@some-host.com:1234"
+      });
+      expect(cache.client.options.host).to.equal('some-host.com');
+      expect(cache.client.options.port).to.equal('1234');
+      expect(cache.client.options.password).to.equal('some-password');
+    });
+  });
+
   describe('custom keys tests', function() {
     beforeEach(function() {
       cache = new RedisCache({

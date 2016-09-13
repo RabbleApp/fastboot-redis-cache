@@ -6,10 +6,21 @@ const FIVE_MINUTES = 5 * 60;
 
 class RedisCache {
   constructor(options) {
-    let client = this.client = redis.createClient({
-      host: options.host,
-      port: options.port
-    });
+    var redisOptions = options;
+
+    if (options.url) {
+      redisOptions = this._stripUsernameFromConfigUrl(options.url);
+    } else {
+      redisOptions = {
+        host: options.host,
+        port: options.port
+      };
+      if (options.password) {
+        redisOptions.password = options.password;
+      }
+    }
+
+    let client = this.client = redis.createClient(redisOptions);
 
     this.expiration = options.expiration || FIVE_MINUTES;
     this.connected = false;
@@ -74,6 +85,17 @@ class RedisCache {
           }
         });
     });
+  }
+
+  _stripUsernameFromConfigUrl(configUrl) {
+    let regex = /redis:\/\/(\w+):(\w+)(.*)/;
+    let matches = configUrl.match(regex);
+
+    if (matches) {
+      configUrl = 'redis://:' + matches[2] + matches[3];
+    }
+
+    return configUrl;
   }
 }
 
