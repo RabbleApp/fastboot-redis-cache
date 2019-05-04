@@ -69,7 +69,7 @@ class RedisCache {
       let statusCodeStr = statusCode && (statusCode + '');
 
       if (statusCodeStr && statusCodeStr.length &&
-         (statusCodeStr.charAt(0) === '4' || statusCodeStr.charAt(0) === '5')) {
+         (statusCodeStr.charAt(0) === '4' || statusCodeStr.charAt(0) === '5' || statusCodeStr.charAt(0) === '3')) {
         res();
         return;
       }
