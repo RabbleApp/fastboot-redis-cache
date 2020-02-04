@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/tomdale/fastboot-redis-cache#readme",
   "dependencies": {
-    "redis": "^2.6.0-2"
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
